@@ -1,0 +1,59 @@
+@using Microsoft.AspNetCore.Identity
+@model List<User>
+@inject UserManager<User> _userManager
+
+@{
+    ViewBag.Title = "Все работники";
+    Layout = "_Layout";
+}
+
+@if (Model.Count == 0)
+{
+    <h2 class="text-center mb-3">Список пуст</h2>
+    <div class="py-5 mx-auto text-center">
+        <a class="btn btn-primary" asp-action="SignUp" asp-controller="Account">Зарегистрировать</a>
+    </div>
+}
+else
+{
+    <h1 class="mb-5">Список работников</h1>
+    <table class="table">
+        <tr>
+            <th>
+                <p>
+                    Email
+                </p>
+            </th>
+            <th>
+                <p>
+                    Имя
+                </p>
+            </th>
+            <th>
+                <p>
+                    Действия
+                </p>
+            </th>
+        </tr>
+        @foreach (var worker in Model)
+        {
+            <tr>
+                <td>@worker.Email</td>
+                <td>@worker.UserName</td>
+                <td>
+                    <ul>
+                        @if (@worker.Id != _userManager.GetUserId(User))
+                        {
+                            <li class="list-group-item border-0">
+                                <a asp-action="Delete" asp-controller="Users" asp-route-id="@worker.Id" class="btn btn-danger">Удалить</a>
+                            </li>
+                        }
+                        <li class="list-group-item border-0">
+                            <a asp-controller="Users" asp-action="UserDetails" asp-route-id="@worker.Id" class="btn btn-primary">Посмотреть профиль</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </table>
+}

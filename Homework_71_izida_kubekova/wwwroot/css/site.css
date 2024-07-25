@@ -1,0 +1,244 @@
+﻿body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+
+.navbar-expand-sm .navbar-nav .nav-link {
+    padding-right: 3.5rem;
+}
+
+.btn-success {
+    background-color: #1e7e34;
+}
+
+.color-Low {
+    color: #1e7e34 !important;
+}
+
+.color-Middle {
+    color: #005cbf !important;
+}
+
+.color-High {
+    color: #dc3545 !important;
+}
+
+.btn {
+    min-width: 107px;
+    margin-bottom: 0.25rem;
+}
+
+li {
+    list-style-type: none !important;
+}
+
+.list-group-item {
+    padding: 0.75rem 1.25rem 0.75rem 0;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+a {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.form-check-label {
+    margin-right: 1rem;
+    vertical-align: middle;
+}
+
+.form-check-input {
+    margin-left: 0;
+}
+
+.form-check {
+    padding: 0.25rem 0 0 0;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+html {
+    font-size: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 0.75rem;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.main-edit-form-container {
+    border: 1px solid rgba(219, 219, 219, 1);
+    border-radius: 3px;
+    margin: 60px auto 0;
+    max-width: 935px;
+    overflow: hidden;
+    width: 100%;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.flex-column-custom {
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.main-column-form {
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: 32px auto 0;
+    max-width: 935px;
+    padding-bottom: 32px;
+    width: 100%;
+    align-items: stretch;
+}
+
+.edit-form-container {
+    flex: 1 1 400px;
+    min-width: 50px;
+    -webkit-box-flex: 1;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.edit-from {
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.edit-user-form-row {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.label-box {
+    padding-left: 32px;
+    padding-right: 32px;
+    text-align: right;
+    color: rgba(38, 38, 38, 1);
+    -webkit-box-flex: 0;
+    flex: 0 0 194px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+}
+
+.input-edit-user-box {
+    flex-basis: 355px;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    padding-right: 60px;
+    color: rgba(38, 38, 38, 1);
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    font-size: 16px;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.input-edit-user-inner-box {
+    width: 100%;
+    max-width: 355px;
+    -webkit-box-flex: 0;
+    flex: 0 0 auto;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    align-content: stretch;
+    display: inline-block;
+    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    margin-bottom: 16px;
+}
+
+.input-text-black {
+    -webkit-appearance: none;
+    background: 0 0;
+    border: 1px solid rgba(219, 219, 219, 1);
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: rgba(38, 38, 38, 1);
+    -webkit-box-flex: 0;
+    flex: 0 1 355px;
+    font-size: 16px;
+    height: 32px;
+    padding: 0 10px;
+    width: 100%;
+    line-height: 18px;
+}

@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Homework_71_izida_kubekova.Extentions
+@model UserDetailsViewModel
+@inject UserManager<User> _userManager
+@{
+    ViewBag.Title = "Профиль пользователя";
+    Layout = "_Layout";
+}
+
+<h4 class="text-danger text-center my-1">@ViewBag.Message</h4>
+<div class="row align-items-start justify-content-center">
+    <div class="col-sm-12 col-md-6">
+        <div class="card mb-5">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h4 class="card-title font-weight-bold">@Model.UserName</h4>
+                    </li>
+                    @if (@Model.Id == _userManager.GetUserId(User) || User.IsInRole("user"))
+                    {
+                        <li class="list-group-item">
+                            <h5>Email: @Model.Email</h5>
+                        </li>
+                    }
+                    <li class="list-group-item ">
+                        <h5>Количество созданных заданий: @Model.CreatedTasks</h5>
+                    </li>
+                    <li class="list-group-item ">
+                        <h5>Количество закрытых заданий: @Model.ClosedTasks</h5>
+                    </li>
+                    @if (@Model.Id == _userManager.GetUserId(User))
+                    {
+                        <li class="list-group-item">
+                            <a asp-action="Edit" asp-controller="Users" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать профиль</a>
+                            <a asp-action="ChangePassword" asp-controller="Users" asp-route-id="@Model.Id" class="btn btn-primary">Сменить пароль</a>
+                        </li>
+                        <li class="list-group-item">
+                            <form asp-controller="Users" asp-action="SendMeProfile" asp-route-id="@Model.Id" method="post">
+                                <button type="submit" class="btn btn-secondary">Отправить профиль мне на почту</button>
+                            </form>
+                        </li>
+                    }
+                    <li class="list-group-item">
+                        <a asp-action="Index" class="btn btn-secondary">Вернуться к списку задач</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<h4 class="mb-5">Список задач в работе (исполнитель @Model.UserName)</h4>
+<table class="table border-bottom">
+    <thead>
+    <tr>
+        <th scope="col">
+            <p>
+                Название
+            </p>
+        </th>
+        <th scope="col">
+            <p>
+                Приоритет
+            </p>
+        </th>
+        <th scope="col">
+            <p>Дата создания</p>
+        </th>
+        <th scope="col">
+            <p>
+                Создал
+            </p>
+        </th>
+        <th scope="col">
+            <p>Статус</p>
+        </th>
+    </tr>
+    </thead>
+    @foreach (TaskModel t in Model.Tasks)
+    {
+        <tr>
+            <td>
+                <a asp-controller="Task" asp-action="Details" asp-route-id="@t.Id">
+                    <span class="font-weight-bold">@t.Name</span>
+                </a>
+            </td>
+            <td>
+                <p class="color-@t.Priority">@t.Priority.GetDisplayName()</p>
+            </td>
+            <td>@t.DateOfCreation?.ToString("dd.MM.yyyy HH:mm")</td>
+            <td>@t.Creator.UserName</td>
+            <td>@t.TaskState.GetDisplayName()</td>
+        </tr>
+    }
+</table>

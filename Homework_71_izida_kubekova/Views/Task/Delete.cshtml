@@ -1,0 +1,28 @@
+﻿@model TaskModel
+
+@{
+    ViewBag.Title = "Удаление задачи";
+    Layout = "_Layout";
+}
+
+@if (ViewBag.Message == "Открытую задачу нельзя удалить")
+{
+    <h6 class="warning-text text-center mb-4">ViewBag.Message</h6>
+    <div class="py-5 mx-auto">
+        <div class="btn-group text-center">
+            <a class="btn btn-primary" asp-action="Details" asp-controller="Task" asp-route-id="@Model.Id">Вернуться на страницу задачи</a>
+        </div>
+    </div>
+}
+else
+{
+    <h6 class="font-weight-bold text-center mb-4">Вы действительно хотите удалить @Model.Name?</h6>
+    <form asp-action="Delete" asp-controller="Task" asp-route-id="@Model.Id" method="post">
+        <div class="py-5 mx-auto">
+            <div class="btn-group-lg text-center">
+                <input type="submit" value="Да" class="btn btn-danger">
+                <a class="btn btn-primary" asp-action="Details" asp-controller="Task" asp-route-id="@Model.Id">Нет</a>
+            </div>
+        </div>
+    </form>
+}

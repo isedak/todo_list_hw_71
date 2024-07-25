@@ -1,0 +1,295 @@
+﻿@model IndexViewModel
+@using Homework_71_izida_kubekova.Extentions
+@{
+    ViewData["Title"] = "Список заданий";
+    Layout = "_Layout";
+}
+<div class="row align-items-start justify-content-center">
+    <div class="col-sm-12">
+        <div class="card border-0 mb-5">
+            <form method="get">
+                <div class="card-body px-0">
+                    <div class="card-columns">
+                        <label class="col-form-label">Полное название: </label>
+                        <input name="name" value="@Model.FilterTaskViewModel.SelectedName" class="form-control"/>
+                        <label class="col-form-label">Слова в описании: </label>
+                        <input name="description" value="@Model.FilterTaskViewModel.SelectedDescription" class="form-control"/>
+                        <label class="col-form-label">Приоритет: </label>
+                        <select name="priority" asp-items="@Model.FilterTaskViewModel.Priorities" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="card-body px-0">
+                    <div class="card-columns">
+                        <label class="col-form-label">Дата создания от: </label>
+                        <input name="dateFrom" value="@Model.FilterTaskViewModel.DateFrom" class="form-control"/>
+                        <label class="col-form-label">Дата создания до: </label>
+                        <input name="dateTill" value="@Model.FilterTaskViewModel.DateTill" class="form-control"/>
+                        <label class="col-form-label">Статус: </label>
+                        <select name="taskState" asp-items="@Model.FilterTaskViewModel.TaskStates" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="card-body px-0">
+                    <div class="card-columns">
+                        <div class="form-check">
+                            <label for="creatorId" class="form-check-label">Созданные мной: </label>
+                            <input type="checkbox" class="form-check-input" id="creatorId" name="creatorId" value="@ViewBag.UserId"/>
+                        </div>
+                        <div class="form-check">
+                            <label for="workerId" class="form-check-label">Взятые в работу мной: </label>
+                            <input type="checkbox" class="form-check-input" id="workerId" name="workerId" value="@ViewBag.UserId"/>
+                        </div>
+                        <div class="form-check">
+                            <label for="freeTasksForUser" class="form-check-label">Все свободные: </label>
+                            <input type="checkbox" class="form-check-input" id="freeTasksForUser" name="freeTasksForUser" value="@ViewBag.UserId"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0">
+                    <div class="card-columns">
+                        <div class="w-100">
+                            <input type="submit" value="Отфильтровать" class="btn btn-primary"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<h1 class="mb-5">Список заданий</h1>
+<table class="table border-bottom">
+    <tr>
+        <th scope="col">
+            <p>
+                №
+            </p>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-order="@(Model.SortViewModel.NameSort)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)">
+                Название
+            </a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-order="@(Model.SortViewModel.PrioritySort)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)">
+                Приоритет
+            </a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-order="@(Model.SortViewModel.DateSort)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)">
+                Дата создания
+            </a>
+        </th>
+        <th scope="col">
+            <p>
+                Создал
+            </p>
+        </th>
+        <th scope="col">
+            <a asp-action="Index" asp-route-order="@(Model.SortViewModel.StateSort)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)">
+                Статус
+            </a>
+        </th>
+        <th scope="col">
+            <p>
+                Действия
+            </p>
+        </th>
+    </tr>
+    @foreach (TaskModel t in Model.Tasks)
+    {
+        <tr>
+            <td>@t.Id</td>
+            <td>
+                <p class="font-weight-bold">@t.Name</p>
+            </td>
+            <td>
+                <p class="color-@t.Priority">@t.Priority.GetDisplayName()</p>
+            </td>
+            <td>@t.DateOfCreation?.ToString("dd.MM.yyyy HH:mm")</td>
+            <td>@t.Creator.UserName</td>
+            <td>@t.TaskState.GetDisplayName()</td>
+            <td>
+                <ul>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="list-group-item border-0">
+                            <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-primary mb-0">Редактировать</a>
+                        </li>
+                        @switch (@t.TaskState)
+                        {
+                            case TaskState.Opened:
+                                @if (ViewBag.UserId != t.WorkerId)
+                                {
+                                    <li class="list-group-item border-0">
+                                        <a asp-action="TakeTask" asp-route-id="@t.Id" class="btn btn-success mb-0">Взять</a>
+                                    </li>
+                                }
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-primary mb-0">Закрыть</a>
+                                </li>
+
+                                break;
+                            case TaskState.New:
+                                <li class="list-group-item border-0">
+                                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-danger mb-0">Удалить</a>
+                                </li>
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-success mb-0">Открыть</a>
+                                </li>
+                                break;
+                            default:
+                                <li class="list-group-item border-0">
+                                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-danger mb-0">Удалить</a>
+                                </li>
+                                break;
+                        }
+                        <li class="list-group-item border-0">
+                            <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-secondary mb-0">Подробнее</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("user"))
+                    {
+                        @if (t.CreatorId == ViewBag.UserId && t.WorkerId == ViewBag.UserId)
+                        {
+                            <li class="list-group-item border-0">
+                                <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-primary mb-0">Редактировать</a>
+                            </li>
+                            @if (t.TaskState == TaskState.Closed)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-danger mb-0">Удалить</a>
+                                </li>
+                            }
+                            @if (t.TaskState == TaskState.Opened)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-primary mb-0">Закрыть</a>
+                                </li>
+                            }
+                        }
+                        @if (t.CreatorId == ViewBag.UserId && t.WorkerId != ViewBag.UserId)
+                        {
+                            <li class="list-group-item border-0">
+                                <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-primary mb-0">Редактировать</a>
+                            </li>
+                            @if (t.TaskState != TaskState.Opened)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-danger mb-0">Удалить</a>
+                                </li>
+                            }
+                            @if (t.TaskState == TaskState.New)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-success mb-0">Открыть</a>
+                                </li>
+                            }
+                        }
+                        @if (t.CreatorId != ViewBag.UserId && t.WorkerId == ViewBag.UserId)
+                        {
+                            @if (t.TaskState == TaskState.Opened)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-primary mb-0">Закрыть</a>
+                                </li>
+                            }
+                        }
+                        @if (t.CreatorId != ViewBag.UserId && t.WorkerId != ViewBag.UserId)
+                        {
+                            @if (t.TaskState == TaskState.New)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="EditState" asp-route-id="@t.Id" class="btn btn-success mb-0">Открыть</a>
+                                </li>
+                            }
+                            @if (t.TaskState == TaskState.Opened)
+                            {
+                                <li class="list-group-item border-0">
+                                    <a asp-action="TakeTask" asp-route-id="@t.Id" class="btn btn-success mb-0">Взять</a>
+                                </li>
+                            }
+                        }
+
+                        <li class="list-group-item border-0">
+                            <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-secondary mb-0">Подробнее</a>
+                        </li>
+                    }
+                </ul>
+            </td>
+        </tr>
+    }
+</table>
+<div class="py-5 mx-auto">
+    <div class="btn-group-lg text-center">
+        @if (Model.PageViewModel.HasPrevious)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.Page - 1)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)"
+               asp-route-order="@(Model.SortViewModel.Current)" class="btn btn-outline-primary">
+                Назад
+            </a>
+        }
+        @if (Model.PageViewModel.HasNext)
+        {
+            <a a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.Page + 1)"
+               asp-route-name="@(Model.FilterTaskViewModel.SelectedName)"
+               asp-route-description="@(Model.FilterTaskViewModel.SelectedDescription)"
+               asp-route-dateFrom="@(Model.FilterTaskViewModel.DateFrom)"
+               asp-route-dateTill="@(Model.FilterTaskViewModel.DateTill)"
+               asp-route-priority="@(Model.FilterTaskViewModel.SelectedPriority)"
+               asp-route-taskState="@(Model.FilterTaskViewModel.SelectedTaskState)"
+               asp-route-creatorId="@(Model.FilterTaskViewModel.CreatorId)"
+               asp-route-freeTasksForUser="@(Model.FilterTaskViewModel.SelectedTasksForWorker)"
+               asp-route-workerId="@(Model.FilterTaskViewModel.WorkerId)"
+               asp-route-order="@(Model.SortViewModel.Current)" class="btn btn-outline-primary">
+                Вперед
+            </a>
+        }
+    </div>
+</div>

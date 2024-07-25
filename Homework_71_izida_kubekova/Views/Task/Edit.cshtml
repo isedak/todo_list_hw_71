@@ -1,0 +1,137 @@
+@using Homework_71_izida_kubekova.Extentions
+@model EditTaskViewModel
+
+@{
+    ViewBag.Title = "Отредактировать задачу";
+    Layout = "_Layout";
+}
+
+<h2 class="text-center">Отредактировать задачу</h2>
+<div class="row align-items-start justify-content-center">
+    <div class="col-sm-12 col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Edit" method="post">
+                    <div class="row align-items-start justify-content-center mb-3">
+                        <label class="col-sm-10 col-form-label">Название</label>
+                        <div class="col-sm-10">
+                            <span asp-validation-for="@Model.TaskModel.Name" class="text-danger text-center mb-3"></span>
+                            <input asp-for="@Model.TaskModel.Name" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row align-items-start justify-content-center mb-3">
+                        <label class="col-sm-10 col-form-label">Описание</label>
+                        <div class="col-sm-10">
+                            <span asp-validation-for="@Model.TaskModel.Description" class="text-danger text-center mb-3"></span>
+                            <textarea rows="10" cols="50" asp-for="@Model.TaskModel.Description" type="text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="row align-items-start justify-content-center mb-3">
+                        <label class="col-sm-10 col-form-label">Приоритет</label>
+                        <div class="col-sm-10">
+                            <span asp-validation-for="@Model.TaskModel.Priority" class="text-danger text-center mb-3"></span>
+                            <select asp-for="@Model.TaskModel.Priority" class="form-control" aria-label="Default select example">
+                                <option selected></option>
+                                @foreach (var priority in Model.Priorities)
+                                {
+                                    <option value="@priority">@priority.GetDisplayName()</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row align-items-start justify-content-center mb-3">
+                        <label class="col-sm-10 col-form-label">Статус</label>
+                        <div class="col-sm-10">
+                            <input disabled type="text" class="form-control" value="@Model.TaskModel.TaskState.GetDisplayName()">
+                            <input asp-for="@Model.TaskModel.TaskState" type="hidden" value="@Model.TaskModel.TaskState">
+                        </div>
+                    </div>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <div class="row align-items-start justify-content-center mb-5">
+                            <label class="col-sm-10 col-form-label">Создатель</label>
+                            <div class="col-sm-10">
+                                <select asp-for="@Model.TaskModel.CreatorId" class="form-control" aria-label="Default select example">
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        <option value="@user.Id">@user.UserName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row align-items-start justify-content-center mb-5">
+                            <label class="col-sm-10 col-form-label">Дата создания</label>
+                            <div class="col-sm-10">
+                                <input asp-for="@Model.TaskModel.DateOfCreation" type="text" class="form-control">
+                            </div>
+                        </div>
+                        @if (@Model.TaskModel.TaskState != TaskState.New)
+                        {
+                            <div class="row align-items-start justify-content-center mb-5">
+                                <label class="col-sm-10 col-form-label">Исполнитель</label>
+                                <div class="col-sm-10">
+                                    <select asp-for="@Model.TaskModel.WorkerId" class="form-control" aria-label="Default select example">
+                                        @foreach (var user in Model.Users)
+                                        {
+                                            <option value="@user.Id">@user.UserName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row align-items-start justify-content-center mb-5">
+                                <label class="col-sm-10 col-form-label">Дата открытия</label>
+                                <div class="col-sm-10">
+                                    <input asp-for="@Model.TaskModel.DateOfOpen" type="text" class="form-control">
+                                </div>
+                            </div>
+                            @if (@Model.TaskModel.TaskState == TaskState.Closed)
+                            {
+                                <div class="row align-items-start justify-content-center mb-5">
+                                    <label class="col-sm-10 col-form-label">Дата закрытия</label>
+                                    <div class="col-sm-10">
+                                        <input asp-for="@Model.TaskModel.DateOfClose" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <div class="row align-items-start justify-content-center mb-5">
+                            <label class="col-sm-10 col-form-label">Создатель</label>
+                            <div class="col-sm-10">
+                                <input disabled type="text" class="form-control" value="@Model.TaskModel.Creator.UserName">
+                                <input asp-for="@Model.TaskModel.CreatorId" type="hidden" value="@Model.TaskModel.Creator.Id">
+                            </div>
+                        </div>
+                        @if (@Model.TaskModel.TaskState != TaskState.New)
+                        {
+                            <div class="row align-items-start justify-content-center mb-5">
+                                <label class="col-sm-10 col-form-label">Исполнитель</label>
+                                <div class="col-sm-10">
+                                    <input disabled type="text" class="form-control" value="@Model.TaskModel.Worker.UserName">
+                                    <input asp-for="@Model.TaskModel.WorkerId" type="hidden" value="@Model.TaskModel.Worker.Id">
+                                </div>
+                            </div>
+                            <input asp-for="@Model.TaskModel.DateOfOpen" type="hidden" value="@Model.TaskModel.DateOfOpen">
+                            <input asp-for="@Model.TaskModel.DateOfClose" type="hidden" value="@Model.TaskModel.DateOfClose">
+                        }
+                        <input asp-for="@Model.TaskModel.DateOfCreation" type="hidden" value="@Model.TaskModel.DateOfCreation">
+                    }
+
+                    <div class="row align-items-start text-center justify-content-center mb-3">
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </div>
+                    <input asp-for="@Model.TaskModel.Id" type="hidden" value="@Model.TaskModel.Id">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

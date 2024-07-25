@@ -1,0 +1,134 @@
+﻿@using Homework_71_izida_kubekova.Extentions
+@using Microsoft.AspNetCore.Identity
+@model TaskModel
+@inject UserManager<User> _userManager
+@{
+    string currentUserId = _userManager.GetUserId(User);
+}
+
+
+@{
+    ViewBag.Title = "Подробнее";
+    Layout = "_Layout";
+}
+
+<div class="row align-items-start justify-content-center">
+    <div class="col-sm-12 col-md-6">
+        <h6 class="text-danger font-weight-bold text-center mb-4">@ViewBag.Message</h6>
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <h4 class="card-title font-weight-bold">@Model.Name</h4>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>Статус: @Model.TaskState.GetDisplayName()</h5>
+                    </li>
+                    <li class="list-group-item ">
+                        <h5>Приоритет: <span class="color-@Model.Priority">@Model.Priority.GetDisplayName()</span></h5>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>Дата создания: <span class="font-weight-bold">@Model.DateOfCreation?.ToString("dd.MM.yyyy HH:mm")</span></h5>
+                    </li>
+                    @if (@Model.DateOfOpen is not null)
+                    {
+                        <li class="list-group-item">
+                            <h5>Дата открытия: <span class="font-weight-bold">@Model.DateOfOpen?.ToString("dd.MM.yyyy HH:mm")</span></h5>
+                        </li>
+                    }
+                    @if (@Model.DateOfClose is not null)
+                    {
+                        <li class="list-group-item">
+                            <h5>Дата закрытия: <span class="font-weight-bold">@Model.DateOfClose?.ToString("dd.MM.yyyy HH:mm")</span></h5>
+                        </li>
+                    }
+                    <li class="list-group-item">
+                        <h5>Создатель: <span class="font-weight-bold">@Model.Creator.UserName</span></h5>
+                    </li>
+                    @if (@Model.WorkerId is not null)
+                    {
+                        <li class="list-group-item">
+                            <h5>Исполнитель: <span class="font-weight-bold">@Model.Worker.UserName</span></h5>
+                        </li>
+                    }
+                    <li class="list-group-item m-b2">
+                        <h6>@Model.Description</h6>
+                    </li>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="list-group-item">
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+                            @switch (@Model.TaskState)
+                            {
+                                case TaskState.Closed:
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+                                    break;
+                                case TaskState.New:
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-success">Открыть</a>
+                                    break;
+                                default:
+                                    @if (@Model.WorkerId != currentUserId)
+                                    {
+                                        <a asp-action="TakeTask" asp-route-id="@Model.Id" class="btn btn-success">Взять</a>
+                                    }
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-primary">Закрыть</a>
+                                    break;
+                            }
+                            <a asp-action="Index" class="btn btn-secondary">Вернуться к списку задач</a>
+                        </li>
+                    }
+                    @if (User.IsInRole("user"))
+                    {
+                        <li class="list-group-item">
+                            @if (Model.CreatorId == currentUserId && Model.WorkerId == currentUserId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+                                @if (Model.TaskState == TaskState.Closed)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+                                }
+                                @if (Model.TaskState == TaskState.Opened)
+                                {
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-primary">Закрыть</a>
+                                }
+                            }
+                            @if (Model.CreatorId == currentUserId && Model.WorkerId != currentUserId)
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редактировать</a>
+                                @if (Model.TaskState != TaskState.Opened)
+                                {
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Удалить</a>
+                                }
+                                @if (Model.TaskState == TaskState.New)
+                                {
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-success">Открыть</a>
+                                }
+                            }
+                            @if (Model.CreatorId != currentUserId && Model.WorkerId == currentUserId)
+                            {
+                                @if (Model.TaskState == TaskState.Opened)
+                                {
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-primary">Закрыть</a>
+                                }
+                            }
+                            @if (Model.CreatorId != currentUserId && Model.WorkerId != currentUserId)
+                            {
+                                @if (Model.TaskState == TaskState.New)
+                                {
+                                    <a asp-action="EditState" asp-route-id="@Model.Id" class="btn btn-success">Открыть</a>
+                                }
+                                @if (Model.TaskState == TaskState.Opened)
+                                {
+                                    <a asp-action="TakeTask" asp-route-id="@Model.Id" class="btn btn-success">Взять</a>
+                                }
+                            }
+
+                            <a asp-action="Index" class="btn btn-secondary">Вернуться к списку задач</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

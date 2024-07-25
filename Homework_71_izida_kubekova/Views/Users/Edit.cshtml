@@ -1,0 +1,54 @@
+﻿@model EditUserViewModel
+
+@{
+    ViewBag.Title = "Редактировать профиль";
+    Layout = "_Layout";
+}
+<div class="main-edit-form-container bg-white">
+    <div class="flex-column-custom align-items-center">
+        <div class="main-column-form">
+            <div class="edit-form-container">
+                <h4 class="card-title font-weight-bold text-center">Отредактировать профиль</h4>
+                <div class="text-danger text-center mb-3" asp-validation-summary="All"></div>
+                <form class="edit-from" asp-action="Edit" asp-controller="Users" asp-antiforgery="true" method="post">
+                    <div class="edit-user-form-row">
+                        <div class="label-box">
+                            <label for="UserName">Имя пользователя</label>
+                        </div>
+                        <div class="input-edit-user-box">
+                            <div class="input-edit-user-inner-box">
+                                <span asp-validation-for="UserName" class="text-danger text-center"></span>
+                                <input id="UserName" asp-for="@Model.UserName" class="input-text-black mb-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit-user-form-row">
+                        <div class="label-box">
+                            <label for="edit-email">Эл. почта</label>
+                        </div>
+                        <div class="input-edit-user-box">
+                            <div class="input-edit-user-inner-box">
+                                <span asp-validation-for="Email" class="text-danger text-center"></span>
+                                <input id="edit-email" asp-for="@Model.Email" class="input-text-black mb-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit-user-form-row">
+                        <div class="label-box">
+                            <label></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </div>
+                    <input type="hidden" asp-for="@Model.Id">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
